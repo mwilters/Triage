@@ -1,0 +1,55 @@
+﻿@model Triage.ViewModels.DoctorFormViewModel
+@{
+    ViewBag.Title = "DoctorForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Doctor</h2>
+@using (Html.BeginForm("Save", "Doctors"))
+{
+    @Html.ValidationSummary(true, "Please fix the errors below")
+    <div class="form-group">
+        @Html.LabelFor(m => m.Doctor.Name)
+        @Html.TextBoxFor((m => m.Doctor.Name), new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Doctor.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Doctor.Email)
+        @Html.TextBoxFor((m => m.Doctor.Email), new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Doctor.Email)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Doctor.Phone)
+        @Html.TextBoxFor((m => m.Doctor.Phone), new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Doctor.Phone)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Availability)
+    </div>
+
+    for (var i = 0; i < Model.Doctor.DaysAvailable.Count; i++)
+    {
+        var item = Model.Doctor.DaysAvailable.ElementAt(i);
+        var key = item.Key;
+        var value = item.Value;
+        <div class="checkbox">
+            <label>
+                @Html.CheckBoxFor(m => m.Doctor.DaysAvailable[key])@key
+            </label>
+         </div>
+    }
+
+    //Using a Hidden field for Customer ID so we can pass this to the controller to allow it to check if the Customer ID is zero or not.  Good practice to put at the bottom of the form.
+    @Html.HiddenFor(m => m.Doctor.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button class="btn btn-danger"><a href="~/Doctors/Index">Exit</a></button>
+
+}
+
+            @*Here we can load any sdript bunldes we need to this page.  JQueryVal is for client side validation.  It is not enabled by deafult MVC.  Adding this bundle will enable it for this page.*@
+            @section scripts
+{
+                @Scripts.Render("~/bundles/jqueryval")
+            }
+

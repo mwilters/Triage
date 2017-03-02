@@ -1,0 +1,201 @@
+﻿@model Triage.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "payment-form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Create a new account</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.FullName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">
+            Address
+        </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" size="20" data-stripe="address_line1">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">
+            City
+        </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" size="20" data-stripe="address_city">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">
+            Postal/Zip
+        </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" size="20" data-stripe="address_zip">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">
+            Prov/State
+        </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" size="20" data-stripe="address_state">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">
+            Country
+        </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" size="20" data-stripe="address_country">
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Phone, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <h2>Plan</h2>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Plan, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor((m => m.StripePlan), new SelectList(Model.Plan, "StripePlan", "StripePlan"), "Select Plan", new { @class = "form-control" })
+        </div>
+    </div>
+
+    <span class="payment-errors"></span>
+    <h2>Payment</h2>
+    <div class="form-group">
+        <label class="col-md-2 control-label">
+            Card Number
+        </label>
+        <div class="col-md-10">
+            <input class="form-control" type="text" size="20" data-stripe="number">
+        </div>
+    </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                Name on Card
+            </label>
+            <div class="col-md-10">
+                <input class="form-control" type="text" size="20" data-stripe="name">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                Expiration (Month)
+            </label>
+
+            <div class="col-md-10">
+                <input class="form-control" type="text" size="2" data-stripe="exp_month">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                Year
+            </label>
+            <div class="col-md-10">
+                <input class="form-control" type="text" size="2" data-stripe="exp_year">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                CVC
+            </label>
+            <div class="col-md-10">
+                <input class="form-control" type="text" size="4" data-stripe="cvc">
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Register" />
+            </div>
+        </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+
+    <script type="text/javascript">
+    Stripe.setPublishableKey('pk_test_M33tryZDWAUHOYr3iYqhzQhA');
+
+    $(document)
+    .ready(function () {
+        $(function () {
+            var $form = $('#payment-form');
+            $form.submit(function (event) {
+                // Disable the submit button to prevent repeated clicks:
+                //$form.find('.submit').prop('disabled', true);
+
+                alert("Creating token");
+
+                // Request a token from Stripe:
+                Stripe.card.createToken($form, stripeResponseHandler);
+
+                // Prevent the form from being submitted:
+                return false;
+            });
+        });
+    });
+
+    function stripeResponseHandler(status, response) {
+        // Grab the form:
+        var $form = $('#payment-form');
+
+        if (response.error) { // Problem!
+
+            // Show the errors on the form:
+            $form.find('.payment-errors').text(response.error.message);
+            $form.find('.submit').prop('disabled', false); // Re-enable submission
+
+        } else { // Token was created!
+
+            // Get the token ID:
+            var token = response.id;
+            alert(token);
+
+            // Insert the token ID into the form so it gets submitted to the server:
+            $form.append($('<input type="hidden" id="stripeToken" name="stripeToken">').val(token));
+
+            // Submit the form:
+            $form.get(0).submit();
+        }
+    };
+    </script>
+}

@@ -1,0 +1,109 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+a{
+    color: #000000;
+    text-decoration: none !important;
+}
+
+/**Log In Form**/
+#loginForm{
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 50px;
+
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.btn-link{
+    color: #000000;
+}
+
+.card img{
+    width: 100px;
+}
+
+
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.navbar {
+    background-color: #ffffff;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.navbar-inverse {
+    border-color: white;
+}
+
+#logo-main {
+    float: left;
+}
+
+#logo-round {
+    float: left;
+    margin-right: 20px;
+    width: 50px;
+}
+
+#main-jumbotron {
+    float: right;
+}
+
+#main-header {
+    padding-top: 15%;
+}
+
+#main-nav-panel{
+    margin-top: 10%;
+}
+
+#patient_wrapper {
+    margin-top: 50px;
+}
+
+#doctor_wrapper {
+    margin-top: 50px;
+}
+
+/**Data Tables**/
+div.dataTables_wrapper div.dataTables_length select{
+    font-size: 10px;
+}
+
+.table-bordered{
+    margin-top: 25px;
+}
+
+/**DatePicker**/
+.datepicker-days{
+    cursor: pointer;
+}
+
+/**Errors**/
+.field-validation-error{
+    color: red;
+}

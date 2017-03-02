@@ -1,0 +1,99 @@
+﻿@model Triage.ViewModels.PatientRecordsFormViewModel
+@{
+    ViewBag.Title = "PatientRecordsForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Patient Record</h2>
+
+@using (Html.BeginForm("Save", "PatientRecords"))
+{
+    @Html.ValidationSummary(true, "Please fix the errors below")
+    <div class="form-group">
+        @Html.LabelFor(m => m.PatientRecord.DiagnosisId)
+        @Html.DropDownListFor((m => m.PatientRecord.DiagnosisId), new SelectList(Model.Diagnosis, "Id", "Description"), "Select Diagnosis", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.PatientRecord.DiagnosisId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PatientRecord.TriageLevelId)
+        @Html.DropDownListFor((m => m.PatientRecord.TriageLevelId), new SelectList(Model.TriageLevel, "Id", "Description"), "Select Triage Level", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.PatientRecord.TriageLevelId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PatientRecord.TriageTypeId)
+        @Html.DropDownListFor((m => m.PatientRecord.TriageTypeId), new SelectList(Model.TriageType, "Id", "Description"), "Select Triage Type", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.PatientRecord.TriageTypeId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PatientRecord.DoctorId)
+        @Html.DropDownListFor((m => m.PatientRecord.DoctorId), new SelectList(Model.Doctor, "Id", "Name"), "Select Doctor", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.PatientRecord.DoctorId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PatientRecord.ReferMD)
+        @Html.TextBoxFor((m => m.PatientRecord.ReferMD), new { @class = "form-control", placeholder = "Referring Doctor" })
+        @Html.ValidationMessageFor(m => m.PatientRecord.ReferMD)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PatientRecord.ConsultDate)
+        @Html.TextBoxFor((m => m.PatientRecord.ConsultDate), "{0:d MMM yyyy}", new { @class = "form-control datepicker", placeholder = "Select Consult Date..." })
+        @Html.ValidationMessageFor(m => m.PatientRecord.ConsultDate)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PatientRecord.DateReceived)
+        @Html.TextBoxFor((m => m.PatientRecord.DateReceived), "{0:d MMM yyyy}", new { @class = "form-control datepicker", placeholder = "Select Date Received..." })
+        @Html.ValidationMessageFor(m => m.PatientRecord.DateReceived)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PatientRecord.WorkloadId)
+        @Html.DropDownListFor((m => m.PatientRecord.WorkloadId), new SelectList(Model.Workload, "Id", "Description"), "Select Workload", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.PatientRecord.WorkloadId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PatientRecord.LimitationsId)
+        @Html.DropDownListFor((m => m.PatientRecord.LimitationsId), new SelectList(Model.Limitations, "Id", "Description"), "Select Limitations", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.PatientRecord.LimitationsId)
+    </div>
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.PatientRecord.ClinicalTrials) Clinical Trials
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.PatientRecord.PathReview) Path Reviewed
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.PatientRecord.ContactWithPatient) Contact with Patient
+        </label>
+    </div>
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.PatientRecord.ContactWithReferringMD) Contact with Refering Doctor
+        </label>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor((m => m.PatientRecord.Comment))
+        @Html.TextAreaFor((m => m.PatientRecord.Comment), new { @class = "form-control" })
+    </div>
+    //Using a Hidden field for PatientRecordID and DoctorId so we can pass this to the controller.  Good practice to put at the bottom of the form.
+    @Html.HiddenFor(m => m.PatientRecord.Id)
+    @Html.HiddenFor(m => m.DoctorId)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button class="btn btn-danger"><a href="~/Patients/Index">Exit</a></button>
+
+}
+
+@*Here we can load any sdript bunldes we need to this page.  JQueryVal is for client side validation.  It is not enabled by deafult MVC.  Adding this bundle will enable it for this page.*@
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+
+

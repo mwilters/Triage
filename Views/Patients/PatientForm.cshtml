@@ -1,0 +1,66 @@
+﻿@model Triage.ViewModels.PatientFormViewModel
+@using System.Text.RegularExpressions
+@{
+    ViewBag.Title = "PatientForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Patient Information</h2>
+
+@using (Html.BeginForm("Save", "Patients"))
+{
+    @Html.ValidationSummary(true, "Please fix the errors below")
+    <div class="form-group">
+        @Html.LabelFor(m => m.Patient.Name)
+        @Html.TextBoxFor((m => m.Patient.Name), new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Patient.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Patient.Acbn)
+        @Html.TextBoxFor((m => m.Patient.Acbn), new { @class = "form-control", placeholder="00000-0000"})
+        @Html.ValidationMessageFor(m => m.Patient.Acbn)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Patient.DateOfBirth)
+        @Html.TextBoxFor((m => m.Patient.DateOfBirth), "{0:d MMM yyyy}", new { @class = "datepicker form-control", placeholder="Select Date..." })
+        @Html.ValidationMessageFor(m => m.Patient.DateOfBirth)
+    </div>
+    @*<div class="form-group">
+        @Html.LabelFor(m => m.Patient.TriageLevelId)
+        @Html.DropDownListFor((m => m.Patient.TriageLevelId), new SelectList(Model.TriageLevel, "Id", "Description"), "Select Level", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Patient.TriageLevelId)
+    </div>*@
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.Patient.HasInsuracne) Patient Has Insurance?
+        </label>
+    </div>
+    //Using a Hidden field for Customer ID so we can pass this to the controller to allow it to check if the Customer ID is zero or not.  Good practice to put at the bottom of the form.
+    @Html.HiddenFor(m => m.Patient.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button class="btn btn-danger"><a href="~/Patients/Index">Exit</a></button>
+
+}
+
+@*Here we can load any sdript bunldes we need to this page.  JQueryVal is for client side validation.  It is not enabled by deafult MVC.  Adding this bundle will enable it for this page.*@
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    $(document)
+    .ready(function () {
+        $(function () { // will trigger when the document is ready
+            $('#Patient_Acbd').datepicker({
+                format: 'mm/dd/yyyy',
+                orientation: 'bottom',
+                autoclose: 'true'
+            }
+
+                ); //Initialise any date pickers
+        });
+    });
+</script>
+

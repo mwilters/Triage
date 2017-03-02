@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Triage.Models.Doctor>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Doctors</h2>
+
+@Html.ActionLink("New Doctor", "New", "Doctors", new { @class = "btn btn-primary" })
+
+<table id="doctor" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Total Patients</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*We are now getting table data from API and rendering it with jQuery plugin DataTables, and we don't need to get the list of customers from the controller in the index action *@
+        @foreach (var doctor in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(doctor.Name, "Edit", "Doctors", new { id = doctor.Id }, null)</td>
+                <td>@doctor.Email</td>
+                <td>@doctor.Phone</td>
+                <td>@doctor.patientCount</td>
+                <td>
+                    <button data-customer-id="@doctor.Id" class="btn-link js-delete">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts{
+    <script>
+        $(document)
+            .ready(function() {
+                //Enables the DataTables Plugin
+                $("#doctor")
+                    .DataTable();
+            });
+    </script>
+
+}
+

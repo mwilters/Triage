@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Triage.Models.Patient>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Patients</h2>
+
+@Html.ActionLink("New Patient", "New", "Patients", new { @class = "btn btn-primary" })
+
+<table id="patient" class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>Patient</th>
+        <th>ACBN</th>
+        <th>Has Insurance</th>
+        <th>Triage Level</th>
+        <th>Triage Type</th>
+        <th>Patient Record</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    @*We are now getting table data from API and rendering it with jQuery plugin DataTables, and we don't need to get the list of customers from the controller in the index action *@
+    @foreach (var patient in Model)
+    {
+        var color = "";
+        var fontColor = "";
+        switch (@patient.PatientRecord.TriageLevel.Description)
+        {
+            case "Level 1":
+                color = "background-color:#dd352e";
+                fontColor = "color:#ffffff";
+                break;
+            case "Level 2":
+                color = "background-color:#ebba16";
+                break;
+            case "Level 3":
+                color = "background-color:#61b872";
+                break;
+            default:
+                color =  "";
+                break;
+        }
+        <tr style=@color>
+            <td>@Html.ActionLink(patient.Name, "Edit", "Patients", new { id = patient.Id }, null)</td>
+            <td>@patient.Acbn</td>
+            <td>@patient.HasInsuracne</td>
+            <td>@patient.PatientRecord.TriageLevel.Description</td>
+            <td>@patient.PatientRecord.TriageType.Description</td>
+            <td>@Html.ActionLink((patient.PatientRecordId.ToString()), "Edit", "PatientRecords", new { id = patient.PatientRecordId }, null)</td>
+            <td>
+                <button data-customer-id="@patient.Id" class="btn-link js-delete">Delete</button>
+            </td>
+        </tr>
+            }
+    </tbody>
+</table>
+
+@section scripts{
+    <script>
+        $(document)
+            .ready(function() {
+                //Enables the DataTables Plugin
+                $("#patient")
+                    .DataTable();
+            });
+    </script>
+
+}
+
+
+
+

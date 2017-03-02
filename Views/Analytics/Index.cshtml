@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Analytics";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Analytics</h2>
+
+<div ng-app="TriageAnalyticsApp" class="container">
+    <div ng-controller="AnalyticsCtlr" ng-init="AnalyticsInitializer()" ng-cloak>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div id="clinicalTrials_chart_div"></div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div id="pathReview_chart_div"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div id="diagnosis_chart_div"></div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div id="doctor_chart_div"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/analytics")
+@*@RenderSection("scripts", required: false)*@
+
+<!--Load the AJAX API-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+
+
+
+
